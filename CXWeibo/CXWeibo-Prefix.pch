@@ -13,4 +13,16 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "UIImage+CXImage.h"
+    #import "UIBarButtonItem+Icon.h"
+
+#define iOS7   ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+
+// 自定义log
+#ifdef DEBUG
+#define CXLog(...) NSLog(__VA_ARGS__)
+#else
+#define CXLog(...)
+#endif
+
 #endif

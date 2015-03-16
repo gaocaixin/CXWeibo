@@ -7,15 +7,34 @@
 //
 
 #import "AppDelegate.h"
+#import "CXTabbarController.h"
+#import "CXNewFeature.h"
+#import "WWSideslipViewController.h"
+#import "GCXOAuthViewController.h"
+#import "GCXAccessToken.h"
+#import "CXWeiboTool.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    application.statusBarHidden = NO;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    
+    // 使window成为主窗口
     [self.window makeKeyAndVisible];
+    
+
+    GCXAccessToken *at = [CXWeiboTool accessToken];
+    
+    if (at) {
+        [CXWeiboTool chooseVC];
+    } else {
+        // 没有账号信息 显示登陆界面
+        self.window.rootViewController = [[GCXOAuthViewController alloc] init];
+    }
+
+    
     return YES;
 }
 
