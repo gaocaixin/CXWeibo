@@ -31,6 +31,8 @@
 {
     self = [super initWithStyle:style];
     if (self) {
+        self.view.backgroundColor = [UIColor colorWithWhite:226/255.0 alpha:1];
+        self.tableView.contentInset = UIEdgeInsetsMake(StatuesCellInterval, 0, StatuesCellInterval, 0);
     }
     return self;
 }
@@ -38,6 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     // 设置导航栏btn
     [self setNavBar];

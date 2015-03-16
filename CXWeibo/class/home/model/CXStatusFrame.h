@@ -10,16 +10,27 @@
 @class GCXStatuse;
 
 
-#define StatuseCellBorder 5
+#define StatuseCellBorder 10
 
 // 名字的字体
-#define StatuseNameLabelFont [UIFont systemFontOfSize:15]
+#define StatuseNameLabelFont [UIFont systemFontOfSize:16]
 // 时间的字体
-#define StatuseTimeLabelFont [UIFont systemFontOfSize:12]
+#define StatuseTimeLabelFont [UIFont systemFontOfSize:14]
 // 来源的字体
-#define StatuseSourceLabelFont [UIFont systemFontOfSize:12]
+#define StatuseSourceLabelFont [UIFont systemFontOfSize:14]
 // 正文的字体
 #define StatuseContentLabelFont [UIFont systemFontOfSize:14]
+
+// 转发正文的字体
+#define StatuseRetweetContentLabelFont [UIFont systemFontOfSize:14]
+
+// 转发昵称的字体
+#define StatuseRetweetNameLabelFont [UIFont systemFontOfSize:15]
+
+// cell 的宽度
+#define StatuesCellBorder 10
+// cell 的间隔
+#define StatuesCellInterval 10
 
 @interface CXStatusFrame : NSObject
 

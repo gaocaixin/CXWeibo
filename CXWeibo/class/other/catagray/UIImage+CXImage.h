@@ -13,8 +13,11 @@
 + (instancetype)imageWithName:(NSString *)name;
 
 /**
- *  返回一张自由拉伸的图片
+ *  返回一张 中点自由拉伸的图片
  */
 + (UIImage *)resizedImageWithName:(NSString *)name;
+
+// 返回一张自由拉伸的图片
++ (UIImage *)resizedImageWithName:(NSString *)name left:(CGFloat)left top:(CGFloat)top;
 
 @end

@@ -19,12 +19,13 @@
 {
     _statuse = statuse;
     
-    CGFloat cellW = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellW = [UIScreen mainScreen].bounds.size.width - 2*StatuesCellBorder;
     
     // topView
     CGFloat topViewW = cellW;
     CGFloat topViewX = 0;
     CGFloat topViewY = 0;
+    CGFloat topViewH = 0;
     
     // 头像iconView
     CGFloat iconViewW = 35;
@@ -51,7 +52,7 @@
     // 时间
     CGSize timeLabelSize = [_statuse.created_at sizeWithFont:StatuseTimeLabelFont];
     CGFloat timeLabelX = nameLabelX;
-    CGFloat timeLabelY = CGRectGetMaxY(_nameLabelF)+StatuseCellBorder;
+    CGFloat timeLabelY = CGRectGetMaxY(_iconViewF)-timeLabelSize.height;
     _timeLabelF = (CGRect){timeLabelX, timeLabelY, timeLabelSize};
 
     // 来源
@@ -67,12 +68,88 @@
     CGFloat contentLabelY = CGRectGetMaxY(_iconViewF)+StatuseCellBorder;
     _contentLabelF = (CGRect){contentLabelX, contentLabelY, contentLabelSize};
     
-    // 计算 topview 的高度
-    CGFloat topViewH = CGRectGetMaxY(_contentLabelF) + StatuseCellBorder;
+    // 配图
+    if (statuse.thumbnail_pic) {
+        CGFloat photoViewW = 100;
+        CGFloat photoViewH = 100;
+        CGFloat photoViewX = StatuseCellBorder;
+        CGFloat photoViewY = CGRectGetMaxY(_contentLabelF)+StatuseCellBorder;
+        _photoViewF = CGRectMake(photoViewX, photoViewY, photoViewW, photoViewH);
+        
+        // 计算 topview 的高度
+        topViewH = CGRectGetMaxY(_photoViewF) + StatuseCellBorder;
+
+    } else {
+        // 计算 topview 的高度
+        topViewH = CGRectGetMaxY(_contentLabelF) + StatuseCellBorder;
+
+    }
+    
+    // 转发
+//    /**转发背景的view*/
+//    @property (nonatomic ,assign, readonly) CGRect retweetViewF;
+//    /**转发昵称*/
+//    @property (nonatomic ,assign, readonly) CGRect retweetNameLabelF;
+//    /**转发正文*/
+//    @property (nonatomic ,assign, readonly) CGRect retweetContentLabelF;
+//    /**转发配图的view*/
+//    @property (nonatomic ,assign, readonly) CGRect retweetPhotoViewF;
+    
+    if (statuse.retweeted_status) {
+        // retweetViewF
+        CGFloat retweetViewW = topViewW-2*StatuseCellBorder;
+        CGFloat retweetViewX = StatuseCellBorder;
+        CGFloat retweetViewY = CGRectGetMaxY(_contentLabelF)+StatuseCellBorder;
+        CGFloat retweetViewH = 0;
+        
+        // retweetNameLabelF
+        _statuse.retweeted_status.user.name = [NSString stringWithFormat:@"@%@", _statuse.retweeted_status.user.name];
+        CGSize retweetNameLabelSize = [_statuse.retweeted_status.user.name sizeWithFont:StatuseRetweetNameLabelFont];
+        CGFloat retweetNameLabelX = StatuseCellBorder;
+        CGFloat retweetNameLabelY = StatuseCellBorder;
+        _retweetNameLabelF = (CGRect){retweetNameLabelX, retweetNameLabelY, retweetNameLabelSize};
+        
+        // retweetContentLabelF
+        CGSize retweetContentLabelSize = [_statuse.retweeted_status.text sizeWithFont:StatuseRetweetContentLabelFont constrainedToSize:CGSizeMake(retweetViewW-2*StatuseCellBorder, CGFLOAT_MAX)];
+        CGFloat retweetContentLabelX = retweetNameLabelX;
+        CGFloat retweetContentLabelY = CGRectGetMaxY(_retweetNameLabelF)+StatuseCellBorder;
+        _retweetContentLabelF = (CGRect){retweetContentLabelX, retweetContentLabelY, retweetContentLabelSize};
+        
+        // retweetPhotoViewF
+        if (statuse.retweeted_status.thumbnail_pic) {
+            CGFloat retweetPhotoViewW = 100;
+            CGFloat retweetPhotoViewH = 100;
+            CGFloat retweetPhotoViewX = retweetContentLabelX;
+            CGFloat retweetPhotoViewY = CGRectGetMaxY(_retweetContentLabelF)+StatuseCellBorder;
+            _retweetPhotoViewF = CGRectMake(retweetPhotoViewX, retweetPhotoViewY, retweetPhotoViewW, retweetPhotoViewH);
+            
+            // retweetViewF
+            retweetViewH = CGRectGetMaxY(_retweetPhotoViewF)+StatuseCellBorder;
+        } else {
+            retweetViewH = CGRectGetMaxY(_retweetContentLabelF)+StatuseCellBorder;
+        }
+        
+        // retweetViewF
+        _retweetViewF = CGRectMake(retweetViewX, retweetViewY, retweetViewW, retweetViewH);
+        
+        // 计算 topview 的高度
+        topViewH = CGRectGetMaxY(_retweetViewF) + StatuseCellBorder;
+    }
+    // topview
     _topViewF = CGRectMake(topViewX, topViewY, topViewW, topViewH);
     
+    
+    CGFloat statusToolBarW = topViewW;
+    CGFloat statusToolBarH = 30;
+    CGFloat statusToolBarX = topViewX;
+    CGFloat statusToolBarY = CGRectGetMaxY(_topViewF);
+    _statusToolBarF = CGRectMake(statusToolBarX, statusToolBarY, statusToolBarW, statusToolBarH);
+    
+    
     // cell 的高度
-    _cellHeight = topViewH + StatuseCellBorder;
+    _cellHeight = CGRectGetMaxY(_statusToolBarF) + StatuesCellInterval;
 }
+
+
 
 @end
