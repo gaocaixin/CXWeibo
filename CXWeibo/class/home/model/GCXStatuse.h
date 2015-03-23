@@ -28,14 +28,12 @@
 @property (nonatomic, assign) int attitudes_count;
 
 /**缩略图*/
-@property (nonatomic, copy) NSString *thumbnail_pic;
+@property (nonatomic, strong) NSArray *pic_urls;
 /**作者*/
 @property (nonatomic ,strong) CXUser *user;
 /**转发的微博*/
 @property (nonatomic ,strong) GCXStatuse *retweeted_status;
 
-//+ (instancetype)statusWithDict:(NSDictionary *)dict;
-//- (instancetype)initWithDict:(NSDictionary *)dict;
 
 @end
 

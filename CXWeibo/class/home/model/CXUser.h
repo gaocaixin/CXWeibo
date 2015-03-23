@@ -16,7 +16,8 @@
 /**作者*/
 @property (nonatomic, copy) NSString *idstr;
 /**vip*/
-@property (nonatomic, assign, getter = isVip) BOOL vip;
+@property (nonatomic, assign) int mbtype;
+@property (nonatomic, assign) int mbrank;
 
 //+ (instancetype)userWithDict:(NSDictionary *)dict;
 //- (instancetype)initWithDict:(NSDictionary *)dict;

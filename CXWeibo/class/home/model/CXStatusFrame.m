@@ -9,7 +9,9 @@
 #import "CXStatusFrame.h"
 #import "GCXStatuse.h"
 #import "CXUser.h"
-
+#import "CXPhoto.h"
+#import "CXPhotosView.h"
+#import "Header.h"
 
 
 @implementation CXStatusFrame
@@ -41,7 +43,7 @@
     _nameLabelF = (CGRect){nameLabelX, nameLabelY, nameLabelSize};
     
     // vip
-    if (_statuse.user.vip) {
+    if (_statuse.user.mbtype > 2) {
         CGFloat vipViewW = 14;
         CGFloat vipViewH = _nameLabelF.size.height;
         CGFloat vipViewX = CGRectGetMaxX(_nameLabelF) + StatuseCellBorder;
@@ -52,7 +54,7 @@
     // 时间
     CGSize timeLabelSize = [_statuse.created_at sizeWithFont:StatuseTimeLabelFont];
     CGFloat timeLabelX = nameLabelX;
-    CGFloat timeLabelY = CGRectGetMaxY(_iconViewF)-timeLabelSize.height;
+    CGFloat timeLabelY = CGRectGetMaxY(_iconViewF)-timeLabelSize.height+StatuseCellBorder*0.3;
     _timeLabelF = (CGRect){timeLabelX, timeLabelY, timeLabelSize};
 
     // 来源
@@ -65,19 +67,18 @@
     // 正文
     CGSize contentLabelSize = [_statuse.text sizeWithFont:StatuseContentLabelFont constrainedToSize:CGSizeMake(topViewW-2*StatuseCellBorder, CGFLOAT_MAX)];
     CGFloat contentLabelX = iconViewX;
-    CGFloat contentLabelY = CGRectGetMaxY(_iconViewF)+StatuseCellBorder;
+    CGFloat contentLabelY = CGRectGetMaxY(_iconViewF)+StatuseCellBorder*0.7;
     _contentLabelF = (CGRect){contentLabelX, contentLabelY, contentLabelSize};
     
     // 配图
-    if (statuse.thumbnail_pic) {
-        CGFloat photoViewW = 100;
-        CGFloat photoViewH = 100;
-        CGFloat photoViewX = StatuseCellBorder;
-        CGFloat photoViewY = CGRectGetMaxY(_contentLabelF)+StatuseCellBorder;
-        _photoViewF = CGRectMake(photoViewX, photoViewY, photoViewW, photoViewH);
+    if (statuse.pic_urls.count) {
+        CGSize photosViewSize = [CXPhotosView photosViewSizeWithPhotoCount:statuse.pic_urls.count];
+        CGFloat photoViewX = contentLabelX;
+        CGFloat photoViewY = CGRectGetMaxY(_contentLabelF)+StatuseCellBorder *0.7;
+        _photosViewF = CGRectMake(photoViewX, photoViewY, photosViewSize.width, photosViewSize.height);
         
         // 计算 topview 的高度
-        topViewH = CGRectGetMaxY(_photoViewF) + StatuseCellBorder;
+        topViewH = CGRectGetMaxY(_photosViewF) + StatuseCellBorder;
 
     } else {
         // 计算 topview 的高度
@@ -99,32 +100,31 @@
         // retweetViewF
         CGFloat retweetViewW = topViewW-2*StatuseCellBorder;
         CGFloat retweetViewX = StatuseCellBorder;
-        CGFloat retweetViewY = CGRectGetMaxY(_contentLabelF)+StatuseCellBorder;
+        CGFloat retweetViewY = CGRectGetMaxY(_contentLabelF);
         CGFloat retweetViewH = 0;
         
         // retweetNameLabelF
-        _statuse.retweeted_status.user.name = [NSString stringWithFormat:@"@%@", _statuse.retweeted_status.user.name];
-        CGSize retweetNameLabelSize = [_statuse.retweeted_status.user.name sizeWithFont:StatuseRetweetNameLabelFont];
+        NSString * name = [NSString stringWithFormat:@"@%@", _statuse.retweeted_status.user.name];
+        CGSize retweetNameLabelSize = [name sizeWithFont:StatuseRetweetNameLabelFont];
         CGFloat retweetNameLabelX = StatuseCellBorder;
-        CGFloat retweetNameLabelY = StatuseCellBorder;
+        CGFloat retweetNameLabelY = StatuseCellBorder *0.7;
         _retweetNameLabelF = (CGRect){retweetNameLabelX, retweetNameLabelY, retweetNameLabelSize};
         
         // retweetContentLabelF
         CGSize retweetContentLabelSize = [_statuse.retweeted_status.text sizeWithFont:StatuseRetweetContentLabelFont constrainedToSize:CGSizeMake(retweetViewW-2*StatuseCellBorder, CGFLOAT_MAX)];
         CGFloat retweetContentLabelX = retweetNameLabelX;
-        CGFloat retweetContentLabelY = CGRectGetMaxY(_retweetNameLabelF)+StatuseCellBorder;
+        CGFloat retweetContentLabelY = CGRectGetMaxY(_retweetNameLabelF)+StatuseCellBorder *0.7;
         _retweetContentLabelF = (CGRect){retweetContentLabelX, retweetContentLabelY, retweetContentLabelSize};
         
         // retweetPhotoViewF
-        if (statuse.retweeted_status.thumbnail_pic) {
-            CGFloat retweetPhotoViewW = 100;
-            CGFloat retweetPhotoViewH = 100;
-            CGFloat retweetPhotoViewX = retweetContentLabelX;
-            CGFloat retweetPhotoViewY = CGRectGetMaxY(_retweetContentLabelF)+StatuseCellBorder;
-            _retweetPhotoViewF = CGRectMake(retweetPhotoViewX, retweetPhotoViewY, retweetPhotoViewW, retweetPhotoViewH);
-            
+        if (statuse.retweeted_status.pic_urls.count) {
+            CGSize retweetPhotosViewSize = [CXPhotosView photosViewSizeWithPhotoCount:statuse.retweeted_status.pic_urls.count];
+            CGFloat retweetPhotosViewX = retweetContentLabelX;
+            CGFloat retweetPhotosViewY = CGRectGetMaxY(_retweetContentLabelF)+StatuseCellBorder *0.7;
+            _retweetPhotosViewF = CGRectMake(retweetPhotosViewX, retweetPhotosViewY, retweetPhotosViewSize.width, retweetPhotosViewSize.height);
+
             // retweetViewF
-            retweetViewH = CGRectGetMaxY(_retweetPhotoViewF)+StatuseCellBorder;
+            retweetViewH = CGRectGetMaxY(_retweetPhotosViewF)+StatuseCellBorder;
         } else {
             retweetViewH = CGRectGetMaxY(_retweetContentLabelF)+StatuseCellBorder;
         }

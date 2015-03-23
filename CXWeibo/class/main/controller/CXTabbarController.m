@@ -13,7 +13,8 @@
 #import "CXMineTableViewController.h"
 #import "CXTarbarView.h"
 #import "CXNavigationController.h"
-#import "WWSideslipViewController.h"
+#import "CXComposeController.h"
+
 
 @interface CXTabbarController () <CXTarbarViewDelegate>
 @property (nonatomic, strong) CXTarbarView *tarbar;
@@ -99,20 +100,16 @@
 
 - (void)tarbarViewDidClickBtn:(NSInteger)tag
 {
-//    CXLog(@"%s", __func__);
-//    self.tabBar.selectedItem = self.tabBar.subviews[tag - 10];
     self.selectedIndex = tag - 10;
-    
-//    [self.navigationController pushViewController:[[UIViewController alloc] init] animated:YES];
     
 }
 
 - (void)centerBtnClicked
 {
-    CXLog(@"%s", __func__);
-    UIViewController *vc = [[UIViewController alloc] init];
-    vc.view.backgroundColor = [UIColor blueColor];
-//    [self.navigationController pushViewController:vc animated:YES];
+    
+    CXComposeController *vc = [[CXComposeController alloc] init];
+    CXNavigationController *nav = [[CXNavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 @end

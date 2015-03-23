@@ -12,18 +12,10 @@
 @interface CXTarbarView ()
 @property (nonatomic, weak) CXTabBarButten *preBtn;
 @property (nonatomic, strong) UIButton *cenBtn;
-//@property (nonatomic, strong) NSMutableArray *arrM;
 @end
 
 @implementation CXTarbarView
 
-//- (NSMutableArray *)arrM
-//{
-//    if (_arrM == nil) {
-//        _arrM = [NSMutableArray array];
-//    }
-//    return _arrM;
-//}
 
 - (id)initWithFrame:(CGRect)frame
 {

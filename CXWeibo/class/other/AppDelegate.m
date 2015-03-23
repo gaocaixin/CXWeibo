@@ -9,10 +9,10 @@
 #import "AppDelegate.h"
 #import "CXTabbarController.h"
 #import "CXNewFeature.h"
-#import "WWSideslipViewController.h"
 #import "GCXOAuthViewController.h"
 #import "GCXAccessToken.h"
 #import "CXWeiboTool.h"
+#import "SDWebImageManager+MJ.h"
 
 @implementation AppDelegate
 
@@ -33,7 +33,6 @@
         // 没有账号信息 显示登陆界面
         self.window.rootViewController = [[GCXOAuthViewController alloc] init];
     }
-
     
     return YES;
 }
@@ -63,6 +62,15 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+// 接收到内存不足
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    // 停止下载所有图片
+    [[SDWebImageManager sharedManager] cancelAll];
+    // 清除缓存中的图片
+    [[SDWebImageManager sharedManager].imageCache clearMemory];
 }
 
 @end

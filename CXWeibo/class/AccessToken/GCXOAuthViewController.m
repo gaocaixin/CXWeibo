@@ -11,11 +11,9 @@
 #import "GCXAccessToken.h"
 #import "CXWeiboTool.h"
 #import "MBProgressHUD+MJ.h"
-//#import "Header.h"
+#import "Header.h"
 
-#define client_id @"3965759837"
-#define client_secret @"aa277498b171adbdf181522c5422b060"
-#define redirect_uri @"http://www.baidu.com"
+
 
 @interface GCXOAuthViewController () <UIWebViewDelegate>
 
@@ -51,11 +49,13 @@
     NSString *str = [request.URL absoluteString];
     NSRange range = [str rangeOfString:@"code="];
     if (range.length) {
-//        NSLog(@"%@", str);
+        
         str = [str substringFromIndex:range.location+range.length];
-//        NSLog(@"%@", str);
         
         [self createAccessToken:str];
+        
+        // 授权成功 不返回回调页面
+        return NO;
     }
     return YES;
 }
@@ -78,11 +78,9 @@
     
     [rom POST:@"https://api.weibo.com/oauth2/access_token" parameters:dict
       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        CXLog(@"%@", responseObject);
-//          NSString *token = responseObject[@"access_token"];
+//        CXLog(@"%@", responseObject);
           // 转模型
           GCXAccessToken *at = [[GCXAccessToken alloc] initWithDict:responseObject];
-//          CXLog(@"%@", at);
           
           [CXWeiboTool saveAccessToken:at];
           
@@ -109,7 +107,7 @@
 // 开始加载
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    [MBProgressHUD showMessage:@"新哥正在帮你加载...."];
+    [MBProgressHUD showMessage:@"正在帮你加载...."];
 }
 
 // 加载完成

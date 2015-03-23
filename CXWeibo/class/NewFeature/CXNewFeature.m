@@ -67,8 +67,15 @@
     
     for (int i = 0; i < ImageCount; i++) {
         NSString *imageName = [NSString stringWithFormat:@"new_feature_%d", i+1];
+        
+        // 设置4英寸的图片 -568h图片只在lunch里匹配 再其他文件中需要手写匹配 并且把图片拽出images
+        if ([UIScreen mainScreen].bounds.size.height == 568) {
+            imageName = [imageName stringByAppendingString:@"-568h@2x.png"];
+        }
+        
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.image = [UIImage imageNamed:imageName];
+        
         
         imageView.frame = CGRectMake(i * imageW, 0, imageW, imageH);
         

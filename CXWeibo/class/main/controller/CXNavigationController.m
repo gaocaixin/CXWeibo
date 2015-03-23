@@ -52,7 +52,6 @@
     // 设置标题文字
     NSMutableDictionary *titleDict = [NSMutableDictionary dictionary];
     titleDict[UITextAttributeTextColor] = [UIColor blackColor];
-    //    titleDict[UITextAttributeFont] = [UIFont systemFontOfSize:16];
     // 设置粗体
     titleDict[UITextAttributeFont] = [UIFont boldSystemFontOfSize:18];
     [navBar setTitleTextAttributes:titleDict];
@@ -73,10 +72,14 @@
     // 设置标题文字
     NSMutableDictionary *titleDict = [NSMutableDictionary dictionary];
     titleDict[UITextAttributeTextColor] = iOS7 ? [UIColor orangeColor] : [UIColor blackColor];
-    titleDict[UITextAttributeFont] = [UIFont systemFontOfSize:iOS7 ? 16 : 14];
-
+    titleDict[UITextAttributeFont] = [UIFont systemFontOfSize:iOS7 ? 15 : 14];
     [barItem setTitleTextAttributes:titleDict forState:UIControlStateNormal];
     [barItem setTitleTextAttributes:titleDict forState:UIControlStateHighlighted];
+    
+    // 不能被点击时的文字属性
+    NSMutableDictionary *disabledTitleDict = [NSMutableDictionary dictionary];
+    disabledTitleDict[UITextAttributeTextColor] = [UIColor lightGrayColor];
+    [barItem setTitleTextAttributes:disabledTitleDict forState:UIControlStateDisabled];
 }
 
 
@@ -86,7 +89,6 @@
     if (self.viewControllers.count > 0) {
         viewController.hidesBottomBarWhenPushed = YES;
     }
-    
     
     [super pushViewController:viewController animated:YES];
 }
